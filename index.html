@@ -1,25 +1,119 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JOGO PING-PONG</title>
     <style>
-        *{
+        * {
             overflow: hidden;
             padding: 0;
             margin: 0;
         }
     </style>
 </head>
+
 <body>
 
     <canvas></canvas>
     <script>
         const canvasEl = document.querySelector("canvas"),
-        canvasCtx = canvasEl.getContext("2d");
+            canvasCtx = canvasEl.getContext("2d"),
+            gapX = 10
+        // const lineWidth = 15
 
-        function setup(){
+        // objeto campo
+        const field = {
+            // propriedades
+            w: window.innerWidth,
+            h: window.innerHeight,
+            // metodos
+            draw: function () {
+                // desenha o campo
+                canvasCtx.fillStyle = "#286047";
+                canvasCtx.fillRect(0, 0, this.w, this.h)
+            }
+        }
+        const line = {
+            w: 15,
+            h: field.h,
+            draw: function () {
+                canvasCtx.fillStyle = "#ffffff"
+                // desenha a linha central
+                canvasCtx.fillRect(
+                    field.w / 2 - this.w / 2,
+                    0,
+                    this.w,
+                    this.h
+
+                )
+            }
+        }
+        const leftPaddle = {
+            x: gapX,
+            y: 100,
+            w: line.w,
+            h: 200,
+            draw: function () {
+                canvasCtx.fillStyle = "#ffffff"
+                // desenha a raquete esquerda
+                canvasCtx.fillRect(this.x, this.y, this.w, this.h)
+            }
+
+        }
+
+        const rightPaddle = {
+            x: field.w - line.w - gapX,
+            y: 100,
+            w: line.w,
+            h: 200,
+            draw: function () {
+                canvasCtx.fillStyle = "#ffffff"
+                // desenha a raquete esquerda
+                canvasCtx.fillRect(this.x, this.y, this.w, this.h)
+            }
+
+        }
+
+        const score = {
+            human: 1,
+            computer: 2,
+            draw: function () {
+                // desenhando o placar
+                canvasCtx.font = "bold 72px Arial" //define a fonte
+                canvasCtx.textAlign = "center" // define o alinhamento
+                canvasCtx.textBaseline = "top" // base do texto
+                canvasCtx.fillStyle = "#01341D"
+                canvasCtx.fillText(this.human, field.w / 4, 50)
+                canvasCtx.fillText(
+                    this.computer,
+                    field.w / 4 + field.w / 2,
+                    50
+                )
+            }
+        }
+        const ball = {
+            x: 300,
+            y: 200,
+            r: 20,
+            speed: 5,
+            _move: function (){
+                this.x += 1 * this.speed
+                this.y += 1 * this.speed
+            },
+            draw: function () {
+                canvasCtx.fillStyle = "#ffffff"
+                // desenha a bolinha
+                canvasCtx.beginPath()
+                canvasCtx.arc(this.y, this.x, this.r, 0, 2 * Math.PI)
+                canvasCtx.fill()
+
+              this._move()  
+            },
+
+        }
+        function setup() {
             // sem abreviatura
             // canvasEl.width = window.innerWidth
             // canvasEl.height = window.innerHeight
@@ -28,17 +122,30 @@
             // canvasCtx.height = window.innerHeight
 
             // abreviado
-            canvasEl.width = canvasCtx.width = window.innerWidth
-            canvasEl.height = canvasCtx.height = window.innerHeight 
+            canvasEl.width = canvasCtx.width = field.w
+            canvasEl.height = canvasCtx.height = field.h
 
         }
-        function draw(){
-            // definindo a cor:
-            canvasCtx.fillStyle = "#286047";
-            canvasCtx.fillRect(0,0, window.innerWidth,window.innerHeight)
+        function draw() {
+            // executando a função campo
+            field.draw()
+            // executa a função linha 
+            line.draw()
+            // executa a função raquete esquerda
+            leftPaddle.draw()
+            // executa a função raquete direita
+            rightPaddle.draw()
+            // executa a função da bolinha 
+            ball.draw()
+            // desenha o placar
+            score.draw()
+
         }
         setup()
         draw()
+        window.setInterval(draw, 1000/ 60)
     </script>
+    <!-- parei na aula suavizando a animação -->
 </body>
+
 </html>
