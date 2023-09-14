@@ -21,7 +21,8 @@
         const canvasEl = document.querySelector("canvas"),
             canvasCtx = canvasEl.getContext("2d"),
             gapX = 10
-        // const lineWidth = 15
+        
+            const mouse = {x: 0 , y: 0}
 
         // objeto campo
         const field = {
@@ -98,7 +99,7 @@
             y: 200,
             r: 20,
             speed: 5,
-            _move: function (){
+            _move: function () {
                 this.x += 1 * this.speed
                 this.y += 1 * this.speed
             },
@@ -109,7 +110,7 @@
                 canvasCtx.arc(this.y, this.x, this.r, 0, 2 * Math.PI)
                 canvasCtx.fill()
 
-              this._move()  
+                this._move()
             },
 
         }
@@ -141,9 +142,37 @@
             score.draw()
 
         }
+
+
+        window.animateFrame = (function () {
+            return (
+                window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (callback) {
+                    return window.setTimeout(callback, 1000 / 60)
+                }
+            )
+        })()
+        function main(){
+            animateFrame(main)
+            draw()
+        }
         setup()
-        draw()
-        window.setInterval(draw, 1000/ 60)
+        main()
+
+    canvasEl.addEventListener('mousemove',function(e){
+        mouse.x = e.pageX
+        mouse.y = e.pageY
+
+
+        console.log(mouse)
+    })
+
+
+
     </script>
     <!-- parei na aula suavizando a animação -->
 </body>
