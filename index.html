@@ -56,10 +56,15 @@
             y: 100,
             w: line.w,
             h: 200,
+            _move: function(){
+                this.y = mouse.y - this.h / 2
+            },
             draw: function () {
                 canvasCtx.fillStyle = "#ffffff"
                 // desenha a raquete esquerda
                 canvasCtx.fillRect(this.x, this.y, this.w, this.h)
+
+                this._move()
             }
 
         }
@@ -69,10 +74,15 @@
             y: 100,
             w: line.w,
             h: 200,
+            _move: function(){
+                this.y = ball.y - this.h / 2
+            },
             draw: function () {
                 canvasCtx.fillStyle = "#ffffff"
                 // desenha a raquete esquerda
                 canvasCtx.fillRect(this.x, this.y, this.w, this.h)
+
+                this._move()
             }
 
         }
